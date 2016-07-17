@@ -8,10 +8,11 @@ namespace Task2
 {/// <summary>
  /// The class contein a method to binary search
  /// </summary>
+ 
     public static class BinarySearch
     {
 
-        static private int BinSearch<T>(T[] array, int left, int right, T seekingElement) where T : IComparable<T>
+        private static int BinSearch<T>(T[] array, int left, int right, T seekingElement) where T : IComparable<T>
         {
             if (array == null)
                 throw new ArgumentException("Array is null");
@@ -42,7 +43,7 @@ namespace Task2
             return BinSearch(array, left, middle - 1, seekingElement);
         }
 
-        public static int Search<T>(T[] array, T seekingElement) where T:IComparable<T>
+        public static int Search<T>(T[] array, T seekingElement) where T : IComparable<T>
         {
             if (array.Length != 0)
             {

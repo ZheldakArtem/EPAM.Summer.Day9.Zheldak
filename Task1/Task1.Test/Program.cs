@@ -11,7 +11,8 @@ namespace Task1.Test
     {
         static void Main(string[] args)
         {
-          
+            string s = "a";
+            s.Replace()
             var timer =new Timer(2);
             var personArtem = new Person(15, "Artem", "Pupkin");
             var personDima = new Person(16, "Dima", "Vasin");
