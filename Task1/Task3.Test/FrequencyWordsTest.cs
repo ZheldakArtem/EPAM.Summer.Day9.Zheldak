@@ -11,12 +11,13 @@ namespace Task3.Test
     [TestFixture]
     public class FrequencyWordsTest
     {
-        [TestCase(@"E:\TestFile1.txt", ExpectedResult = 2)]
+        [Test]
         public Dictionary<string,int> GetFrequencyTest(string pathFile)
         {
-
-
-            return null;
+            var ath = AppDomain.CurrentDomain.BaseDirectory;
+            
+        
+            return wordFrequency;
         }
     }
 }
