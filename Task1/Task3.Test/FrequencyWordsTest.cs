@@ -14,10 +14,11 @@ namespace Task3.Test
         [Test]
         public Dictionary<string,int> GetFrequencyTest(string pathFile)
         {
-            var ath = AppDomain.CurrentDomain.BaseDirectory;
+           // var diPath = AppDomain.CurrentDomain.BaseDirectory;
             
+            var result = GetFrequency(@"E:\TestFile1.txt");
         
-            return wordFrequency;
+            return result;
         }
     }
 }

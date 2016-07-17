@@ -14,17 +14,15 @@ namespace Task3
         {
             char[] buffer = new char[16];
             var result = new Dictionary<string, int>();
-            string text = string.Empty;
            
             using (var fileStream = new FileStream(pathFile, FileMode.Open, FileAccess.Read))
             {
                 using (var streamReader = new StreamReader(fileStream))
                 {
-                    int bytesRead = 0;
-                    while ((bytesRead = streamReader.Read(buffer, 0, buffer.Length)) > 0)
+                   
+                    while (( streamReader.Read(buffer, 0, buffer.Length)) > 0)
                     {
-                        
-                        var arrayWords = DeletePunctuation(new char []{'.',',',':','?','!'}, new string(buffer)).Split(' ');
+                        var arrayWords = DeletePunctuation(new[]{'.',',',':','?','!'}, new string(buffer)).Split(' ');
                         for (int i = 0; i < arrayWords.Length; i++)
                         {
                             if (!result.ContainsKey(arrayWords[i]))
