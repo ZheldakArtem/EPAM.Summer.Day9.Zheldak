@@ -16,7 +16,7 @@ namespace Task3
         /// <returns></returns>
         public static Dictionary<string, int> GetFrequency(string pathFile)
         {
-            char[] buffer = new char[100000];
+            char[] buffer = new char[16];
             var result = new Dictionary<string, int>();
             string temp = string.Empty;
 
@@ -25,14 +25,23 @@ namespace Task3
                 using (var streamReader = new StreamReader(fileStream))
                 {
                     int sizeRead;
+
                     while ((sizeRead = streamReader.Read(buffer, 0, buffer.Length)) > 0)
                     {
+                        temp = temp.Replace('\0', ' ');
+
+                        if (buffer[sizeRead - 1] == ' ')
+                        {
+                            buffer[sizeRead - 1] = '\0';
+                        }
+
                         var strLine = new string(buffer);
-                        temp += (strLine[0] != ' ' ? " " : "") + strLine;
+                        temp += strLine;
                         temp = DeletePunctuation(new[] { '.', ',', ':', '?', '!' }, temp);
+
                         var arrayWords = temp.Split(' ');
 
-                        for (int i = 0; i < arrayWords.Length ; i++)
+                        for (int i = 0; i < arrayWords.Length - 1; i++)
                         {
                             if (!result.ContainsKey(arrayWords[i]))
                             {
@@ -42,29 +51,38 @@ namespace Task3
                             {
                                 result[arrayWords[i]]++;
                             }
-                            
-                            temp = arrayWords[arrayWords.Length - 1];
                         }
-                        
-                        if (!result.ContainsKey(arrayWords[arrayWords.Length - 1]))
+                        temp = arrayWords[arrayWords.Length - 1];
+                        if (sizeRead != buffer.Length)
                         {
-                            result.Add(arrayWords[arrayWords.Length - 1], 1);
+                            if (!result.ContainsKey(arrayWords[arrayWords.Length - 1]))
+                            {
+                                result.Add(arrayWords[arrayWords.Length - 1], 1);
+                            }
+                            else
+                            {
+                                result[arrayWords[arrayWords.Length - 1]]++;
+                            }
                         }
-                        else
-                        {
-                            result[arrayWords[arrayWords.Length - 1]]++;
-                        }
-
+                        BufClear(buffer);
                     }
                 }
             }
             return result;
         }
 
+        private static void BufClear(char[] buffer)
+        {
+            for (int i = 0; i < buffer.Length; i++)
+            {
+                buffer[i] = '\0';
+            }
+        }
+
         private static string DeletePunctuation(char[] arraySymbol, string text)
         {
 
-            for (int i = 0; i < arraySymbol.Length; i++)
+            for (int i = 0; i < arraySymbol.Length - 1; i++)
             {
                 text = text.Replace(arraySymbol[i].ToString(), "");
             }

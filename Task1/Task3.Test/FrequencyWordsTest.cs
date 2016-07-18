@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,14 +12,34 @@ namespace Task3.Test
     [TestFixture]
     public class FrequencyWordsTest
     {
-        [TestCase("wf", ExpectedResult = 1)]
-        public Dictionary<string, int> GetFrequencyTest(string sf)
+        [TestCaseSource(typeof(DataSource), nameof(DataSource.GetDataPath))]
+        public void GetFrequencyTest(string filePuth,Dictionary<string,int> result)
         {
-            // var diPath = AppDomain.CurrentDomain.BaseDirectory;
-            string s = sf;
-            var result = GetFrequency(@"E:\TestFile1.txt");
+            Dictionary<string,int> dic= GetFrequency(filePuth);
+            
+           CollectionAssert.AreEqual(dic,result);
+        }
+    }
 
-            return result;
+    public static class DataSource
+    {
+        public static IEnumerable GetDataPath
+        {
+            get
+            {
+                yield return new TestCaseData(@"E:\TestFile1.txt",new Dictionary<string, int>()
+                {
+                    {"I", 1},
+                    {"am", 1},
+                    {"say", 1},
+                    {"a", 1 },
+                    { "student", 1 },
+                    { "that", 1 },
+                 
+                });
+
+
+            }
         }
     }
 }
