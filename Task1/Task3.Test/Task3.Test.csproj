@@ -48,9 +48,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Task3\Task3.csproj">
       <Project>{0A1CD68E-0C2B-4800-B104-0131761ED4A3}</Project>
       <Name>Task3</Name>
