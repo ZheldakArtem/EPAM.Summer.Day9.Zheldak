@@ -24,9 +24,7 @@ namespace Task2.Test
         public int GetIndexSearchItemWithDoubleArray(double[] array, double search)
         {
             var comparer = new TestComparer<double>();
-            List<int> d=new List<int>();
-            Comparison<>
-            return Search(array, search, comparer.SomeCompare);
+          return Search(array, search, comparer.SomeCompare);
         }
 
         [TestCaseSource(typeof(DataSource), nameof(DataSource.GetDataWithIncorrectValue))]
