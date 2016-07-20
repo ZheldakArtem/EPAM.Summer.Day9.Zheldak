@@ -9,6 +9,7 @@ namespace Task3
 {
     public static class FrequencyWords
     {
+        private const int BUFFERSIZE = 64;
         /// <summary>
         /// The Method finds frequency of words in the text
         /// </summary>
@@ -16,7 +17,7 @@ namespace Task3
         /// <returns></returns>
         public static Dictionary<string, int> GetFrequency(string pathFile)
         {
-            char[] buffer = new char[16];
+            char[] buffer = new char[BUFFERSIZE];
             var result = new Dictionary<string, int>();
             string temp = string.Empty;
 
@@ -28,47 +29,52 @@ namespace Task3
 
                     while ((sizeRead = streamReader.Read(buffer, 0, buffer.Length)) > 0)
                     {
-                        temp = temp.Replace('\0', ' ');
-
-                        if (buffer[sizeRead - 1] == ' ')
-                        {
-                            buffer[sizeRead - 1] = '\0';
-                        }
-
-                        var strLine = new string(buffer);
-                        temp += strLine;
-                        temp = DeletePunctuation(new[] { '.', ',', ':', '?', '!' }, temp);
-
-                        var arrayWords = temp.Split(' ');
-
-                        for (int i = 0; i < arrayWords.Length - 1; i++)
-                        {
-                            if (!result.ContainsKey(arrayWords[i]))
-                            {
-                                result.Add(arrayWords[i], 1);
-                            }
-                            else
-                            {
-                                result[arrayWords[i]]++;
-                            }
-                        }
-                        temp = arrayWords[arrayWords.Length - 1];
-                        if (sizeRead != buffer.Length)
-                        {
-                            if (!result.ContainsKey(arrayWords[arrayWords.Length - 1]))
-                            {
-                                result.Add(arrayWords[arrayWords.Length - 1], 1);
-                            }
-                            else
-                            {
-                                result[arrayWords[arrayWords.Length - 1]]++;
-                            }
-                        }
-                        BufClear(buffer);
+                        BufferProcessing(buffer, ref result, sizeRead, temp);
                     }
                 }
             }
             return result;
+        }
+
+        private static void BufferProcessing(char[] buffer, ref Dictionary<string, int> result, int sizeRead, string temp)
+        {
+            temp = temp.Replace('\0', ' ');
+
+            if (buffer[sizeRead - 1] == ' ')
+            {
+                buffer[sizeRead - 1] = '\0';
+            }
+
+            var strLine = new string(buffer);
+            temp += strLine;
+            temp = DeletePunctuation(new[] { '.', ',', ':', '?', '!' }, temp);
+
+            var arrayWords = temp.Split(' ');
+
+            for (int i = 0; i < arrayWords.Length - 1; i++)
+            {
+                if (!result.ContainsKey(arrayWords[i]))
+                {
+                    result.Add(arrayWords[i], 1);
+                }
+                else
+                {
+                    result[arrayWords[i]]++;
+                }
+            }
+            temp = arrayWords[arrayWords.Length - 1];
+            if (sizeRead != buffer.Length)
+            {
+                if (!result.ContainsKey(arrayWords[arrayWords.Length - 1]))
+                {
+                    result.Add(arrayWords[arrayWords.Length - 1], 1);
+                }
+                else
+                {
+                    result[arrayWords[arrayWords.Length - 1]]++;
+                }
+            }
+            BufClear(buffer);
         }
 
         private static void BufClear(char[] buffer)
