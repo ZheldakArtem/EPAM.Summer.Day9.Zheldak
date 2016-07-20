@@ -36,48 +36,59 @@ namespace Task4
             _bookListStorage.SaveBooks(books);
         }
         /// <summary>
-        /// Add book to the collection
+        /// Adding book to the collection
         /// </summary>
-        /// <param name="book"></param>
-        /// <returns></returns>
-        public bool AddBook(Book book)
+        /// <param name="book">The book wich you want to add.</param>
+      public void AddBook(Book book)
         {
             if (ReferenceEquals(book, null))
             {
-                throw new ArgumentNullException();
+                logger.Error("The Argument has a null reference");
+                throw new ArgumentNullException(nameof(book));
             }
             if (_books.Contains(book))
             {
-                return false;
+                logger.Error("The collection contains book which you want to add");
+                throw new ArgumentException(nameof(book));
             }
             _books.Add(book);
-            return true;
+            logger.Info("The book added");
         }
-
-        public bool RemoveBook(Book book)
+        /// <summary>
+        /// Adding book from the collection
+        /// </summary>
+        /// <param name="book">The book wich you want to add.</param>
+        public void RemoveBook(Book book)
         {
             if (ReferenceEquals(book, null))
             {
-                throw new ArgumentNullException();
+                logger.Error("The Argument has a null reference");
+                throw new ArgumentNullException(nameof(book));
             }
-            if (_books.Contains(book))
+            if (!_books.Contains(book))
             {
-                _books.Remove(book);
-                return true;
+                logger.Error("The collection don't contains book which you want to remove");
+                throw new ArgumentException(nameof(book));
             }
+            _books.Remove(book);
+            logger.Info("The book removed");
 
-            return false;
         }
         /// <summary>
         /// Searches for an element that matches the conditions defined by the specified predicate, and returns the first occurrence within the entire.
         /// </summary>
-        /// <param name="books">Collection of books</param>
         /// <param name="predicate">The delegate that defines the conditions of the element to search for</param>
         /// <returns>The first element that matches the conditions defined by the specified predicate, if found; otherwise, the default value for type</returns>
         public Book FindBooksByTag(Predicate<Book> predicate)
         {
-            if (ReferenceEquals(predicate, null) || ReferenceEquals(_books, null))
+            if (ReferenceEquals(predicate, null))
             {
+                logger.Error($"{nameof(predicate)} has null reference");
+                throw new ArgumentNullException();
+            }
+            if (ReferenceEquals(_books, null))
+            {
+                logger.Error($"{nameof(_books)} has a null reference");
                 throw new ArgumentNullException();
             }
             return _books.Find(predicate);
@@ -85,14 +96,20 @@ namespace Task4
         /// <summary>
         /// Sorts the elements in the collection using the specified delegate.
         /// </summary>
-        /// <param name="books">Collection of books</param>
         /// <param name="comparison">The delegate to use when comparing elements.</param>
-        public void SortBooksByTag( Comparison<Book> comparison)
+        public void SortBooksByTag(Comparison<Book> comparison)
         {
-            if (ReferenceEquals(comparison, null) || ReferenceEquals(_books, null))
+            if (ReferenceEquals(comparison, null))
             {
+                logger.Error($"{nameof(comparison)} has a null reference");
                 throw new ArgumentNullException();
             }
+            if (ReferenceEquals(_books, null))
+            {
+                logger.Error($"{nameof(_books)} has a null reference");
+                throw new ArgumentNullException();
+            }
+            logger.Info("The collection of Books sorted");
             _books.Sort(comparison);
         }
     }

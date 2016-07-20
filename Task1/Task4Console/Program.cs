@@ -17,8 +17,6 @@ namespace Task4Console
             IBookListStorage bookListStorage = new BinaryBookListStorage(@"E:\Books.bin");
             BookListService bookService = new BookListService(bookListStorage);
             List<Book> book = new List<Book>();
-
-            bookService.AddBook(new Book("Artem", "Read life", "Dram", 1995, 20001));
             bookService.AddBook(new Book("Artem", "Read life", "Dram", 1995, 20001));
             bookService.AddBook(new Book("Pasha", "Rooby", "Mult", 1225, 200));
             bookService.AddBook(new Book("Dima", "C++", "ut", 1955, 29001));

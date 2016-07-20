@@ -23,12 +23,13 @@ namespace Task4
         /// <returns>Collection of books</returns>
         public List<Book> LoadBooks()
         {
-            var listBooks=new List<Book>();
+            var listBooks = new List<Book>();
             try
             {
+                logger.Info("Loading books");
                 using (BinaryReader reader = new BinaryReader(File.Open(_filePath, FileMode.Open)))
                 {
-                     while (reader.PeekChar() > -1)
+                    while (reader.PeekChar() > -1)
                     {
                         Book book = new Book(reader.ReadString(), reader.ReadString(), reader.ReadString(),
                             reader.ReadInt32(), reader.ReadInt32());
@@ -39,21 +40,25 @@ namespace Task4
             }
             catch (FileNotFoundException e)
             {
+                logger.Error("File not found");
                 throw;
             }
             catch (FileLoadException e)
             {
+                logger.Error(e,"The File can't loaded");
                 throw;
             }
             catch (IOException e)
             {
+                logger.Error(e, "I/O error occurs");
                 throw;
             }
             catch (ArgumentNullException e)
             {
+                logger.Error(e, "Parameter has a null reference");
                 throw;
             }
-    
+            logger.Info("Loaded books");
             return listBooks;
         }
         /// <summary>
@@ -64,6 +69,7 @@ namespace Task4
         {
             try
             {
+                logger.Info("Saving books");
                 using (BinaryWriter writer = new BinaryWriter(File.Open(_filePath, FileMode.OpenOrCreate)))
                 {
                     foreach (Book book in books)
@@ -78,16 +84,20 @@ namespace Task4
             }
             catch (FileNotFoundException e)
             {
+                logger.Error(e, "The File can't loaded");
                 throw;
             }
             catch (IOException e)
             {
+                logger.Error(e, "I/O error occurs");
                 throw;
             }
-            catch (ArgumentNullException)
+            catch (ArgumentNullException e)
             {
+                logger.Error(e, "Parameter has a null reference");
                 throw;
             }
+            logger.Info("Books saved");
         }
     }
 }
