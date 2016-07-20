@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -45,6 +46,16 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\EPAM.Summer.Day7.Zheldak\Task_Book\Task_Book\Task_Book.csproj">
+      <Project>{D240562A-785B-42E9-89A3-94DAE5AAAEA0}</Project>
+      <Name>Task_Book</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Task4\Task4.csproj">
+      <Project>{14210910-84D9-4FC9-8AB4-6130BCE3DA0E}</Project>
+      <Name>Task4</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

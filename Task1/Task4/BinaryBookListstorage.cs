@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog;
 using Task_Book;
 
 namespace Task4
@@ -11,7 +12,7 @@ namespace Task4
     public class BinaryBookListStorage : IBookListStorage
     {
         private readonly string _filePath;
-
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public BinaryBookListStorage(string filePath)
         {
             _filePath = filePath;
@@ -27,7 +28,7 @@ namespace Task4
             {
                 using (BinaryReader reader = new BinaryReader(File.Open(_filePath, FileMode.Open)))
                 {
-                    while (reader.PeekChar() > -1)
+                     while (reader.PeekChar() > -1)
                     {
                         Book book = new Book(reader.ReadString(), reader.ReadString(), reader.ReadString(),
                             reader.ReadInt32(), reader.ReadInt32());

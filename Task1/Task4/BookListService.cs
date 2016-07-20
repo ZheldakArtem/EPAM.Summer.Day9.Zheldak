@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -12,6 +13,7 @@ namespace Task4
     {
         private readonly IBookListStorage _bookListStorage;
         private readonly List<Book> _books;
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         public BookListService(IBookListStorage bookListStorage)
         {
             _bookListStorage = bookListStorage;
@@ -72,26 +74,26 @@ namespace Task4
         /// <param name="books">Collection of books</param>
         /// <param name="predicate">The delegate that defines the conditions of the element to search for</param>
         /// <returns>The first element that matches the conditions defined by the specified predicate, if found; otherwise, the default value for type</returns>
-        public Book FindBooksByTag(List<Book> books, Predicate<Book> predicate)
+        public Book FindBooksByTag(Predicate<Book> predicate)
         {
-            if (ReferenceEquals(predicate, null) || ReferenceEquals(books, null))
+            if (ReferenceEquals(predicate, null) || ReferenceEquals(_books, null))
             {
                 throw new ArgumentNullException();
             }
-            return books.Find(predicate);
+            return _books.Find(predicate);
         }
         /// <summary>
         /// Sorts the elements in the collection using the specified delegate.
         /// </summary>
         /// <param name="books">Collection of books</param>
         /// <param name="comparison">The delegate to use when comparing elements.</param>
-        public void SortBooksByTag(List<Book> books, Comparison<Book> comparison)
+        public void SortBooksByTag( Comparison<Book> comparison)
         {
-            if (ReferenceEquals(comparison, null) || ReferenceEquals(books, null))
+            if (ReferenceEquals(comparison, null) || ReferenceEquals(_books, null))
             {
                 throw new ArgumentNullException();
             }
-            books.Sort(comparison);
+            _books.Sort(comparison);
         }
     }
 }
