@@ -1,6 +1,7 @@
 ﻿using NLog;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -17,7 +18,7 @@ namespace Task4
         public BookListService(IBookListStorage bookListStorage)
         {
             _bookListStorage = bookListStorage;
-            _books = LoadBooks();
+            _books=new List<Book>();
         }
         /// <summary>
         /// Invoke BinaryBookListStorage's method LoadBooks
@@ -25,7 +26,12 @@ namespace Task4
         /// <returns>Collection of books</returns>
         public List<Book> LoadBooks()
         {
-            return _bookListStorage.LoadBooks();
+            string storage;
+            storage = ConfigurationManager.AppSettings["binary_storage"];
+            if (storage =="true")
+                return _bookListStorage.BinariDeserialize();
+
+            return _bookListStorage.XMLDeserialize();
         }
         /// <summary>
         /// Invoke BinaryBookListStorage's method SaveBooks
@@ -33,13 +39,23 @@ namespace Task4
         /// <param name="books">Collection of books</param>
         public void SaveBooks(IEnumerable<Book> books)
         {
-            _bookListStorage.SaveBooks(books);
+            string storage;
+            storage = ConfigurationManager.AppSettings["binary_storage"];
+            if (storage == "true")
+                _bookListStorage.BinarySerialize(books);
+            else
+                _bookListStorage.XMLSerialize(books);
+        }
+
+        public List<Book> GetBooks()
+        {
+            return _books;
         }
         /// <summary>
         /// Adding book to the collection
         /// </summary>
         /// <param name="book">The book wich you want to add.</param>
-      public void AddBook(Book book)
+        public void AddBook(Book book)
         {
             if (ReferenceEquals(book, null))
             {

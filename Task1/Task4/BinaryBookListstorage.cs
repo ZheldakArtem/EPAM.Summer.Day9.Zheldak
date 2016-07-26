@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 using NLog;
 using Task_Book;
 
@@ -13,7 +16,7 @@ namespace Task4
     {
         private readonly string _filePath;
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        public BinaryBookListStorage(string filePath)
+        public BinaryBookListStorage(string filePath = @"..\")
         {
             _filePath = filePath;
         }
@@ -45,7 +48,7 @@ namespace Task4
             }
             catch (FileLoadException e)
             {
-                logger.Error(e,"The File can't loaded");
+                logger.Error(e, "The File can't loaded");
                 throw;
             }
             catch (IOException e)
@@ -64,7 +67,7 @@ namespace Task4
         /// <summary>
         /// Save the collection of books in the file
         /// </summary>
-        /// <param name="books"></param>
+        /// <param name="books">The book collection</param>
         public void SaveBooks(IEnumerable<Book> books)
         {
             try
@@ -98,6 +101,50 @@ namespace Task4
                 throw;
             }
             logger.Info("Books saved");
+        }
+
+        /// <summary>
+        /// Deserialize book from xml file
+        /// </summary>
+        /// <returns>Collection of books</returns>
+        public List<Book> XMLDeserialize()
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(List<Book>));
+            using (Stream s = File.OpenRead(_filePath + "person.xml"))
+                return (List<Book>)xs.Deserialize(s);
+        }
+
+        /// <summary>
+        ///  Xml Searilization of book
+        /// </summary>
+        /// <param name="books">The collection of books</param>
+        public void XMLSerialize(IEnumerable<Book> books)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(Book));
+            using (Stream s = File.Create(_filePath + "book.xml"))
+                xs.Serialize(s, books);
+        }
+
+        /// <summary>
+        /// Deserialize book from binary file
+        /// </summary>
+        /// <returns>Collection of books</returns>
+        public List<Book> BinariDeserialize()
+        {
+            IFormatter formatter = new BinaryFormatter();
+            using (Stream s = File.OpenRead(_filePath + "book.bin"))
+                return (List<Book>)formatter.Deserialize(s);
+        }
+
+        /// <summary>
+        ///  Binary Searilization of book
+        /// </summary>
+        /// <param name="books">The collection of book</param>
+        public void BinarySerialize(IEnumerable<Book> books)
+        {
+            IFormatter formatter = new BinaryFormatter();
+            using (Stream s = File.Create(_filePath + "book.bin"))
+                formatter.Serialize(s, books);
         }
     }
 }

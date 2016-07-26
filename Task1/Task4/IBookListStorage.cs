@@ -11,5 +11,10 @@ namespace Task4
     {
         List<Book> LoadBooks();
         void SaveBooks(IEnumerable<Book> books);
+        List<Book> XMLDeserialize();
+        void XMLSerialize(IEnumerable<Book> books);
+        List<Book> BinariDeserialize();
+        void BinarySerialize(IEnumerable<Book> books);
+
     }
 }

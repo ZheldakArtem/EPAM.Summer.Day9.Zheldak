@@ -14,7 +14,7 @@ namespace Task4Console
     {
         private static void Main(string[] args)
         {
-            IBookListStorage bookListStorage = new BinaryBookListStorage(@"E:\Books.bin");
+            IBookListStorage bookListStorage = new BinaryBookListStorage();
             BookListService bookService = new BookListService(bookListStorage);
             List<Book> book = new List<Book>();
             bookService.AddBook(new Book("Artem", "Read life", "Dram", 1995, 20001));
@@ -23,9 +23,8 @@ namespace Task4Console
             bookService.AddBook(new Book("Olga", "Phyton", "Drh", 1933, 20001));
             bookService.AddBook(new Book("Petr", "The everest", "Ddh", 2015, 4001));
             bookService.AddBook(new Book("oleg", "The football", "Dramju", 342, 1241));
-            Book findBook = bookService.FindBooksByTag((a) => a.Author == "Artem");
-            bookService.SortBooksByTag((a, b) => a.Publication.CompareTo(b.Publication));
-
+            bookService.SaveBooks(bookService.GetBooks());
+           book= bookService.LoadBooks();
 
             ReadKey();
 
