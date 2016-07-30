@@ -41,7 +41,7 @@ namespace Task4
         {
             string storage;
             storage = ConfigurationManager.AppSettings["binary_storage"];
-            if (storage == "true")
+            if (storage == "wec")
                 _bookListStorage.BinarySerialize(books);
             else
                 _bookListStorage.XMLSerialize(books);

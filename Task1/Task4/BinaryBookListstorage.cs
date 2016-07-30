@@ -109,9 +109,12 @@ namespace Task4
         /// <returns>Collection of books</returns>
         public List<Book> XMLDeserialize()
         {
-            XmlSerializer xs = new XmlSerializer(typeof(List<Book>));
+            var ds = new DataContractSerializer(typeof(List<Book>));
+            List<Book> h;
             using (Stream s = File.OpenRead(_filePath + "person.xml"))
-                return (List<Book>)xs.Deserialize(s);
+                h = (List<Book>)ds.ReadObject(s);
+
+            return h;
         }
 
         /// <summary>
@@ -120,9 +123,9 @@ namespace Task4
         /// <param name="books">The collection of books</param>
         public void XMLSerialize(IEnumerable<Book> books)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(Book));
-            using (Stream s = File.Create(_filePath + "book.xml"))
-                xs.Serialize(s, books);
+            var ds = new DataContractSerializer(typeof(IEnumerable<Book>));
+            using (Stream s = File.Create(_filePath + "person.xml"))
+                ds.WriteObject(s, books);
         }
 
         /// <summary>
